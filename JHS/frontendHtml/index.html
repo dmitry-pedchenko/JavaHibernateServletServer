@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Hibernate and Sockets test</title>
+</head>
+<body>
+
+<p>Insert user</p>
+<p>If name already exist then user overwrites</p>
+<form action="/api/v1/sessions" method="post">
+    <p>Login: <input type="text" name="name"></p>
+    <p>Password: <input type="text" name = "password"></p>
+    <input type="submit" value="Sign in">
+</form>
+
+<p>Delete User</p>
+<form action="/api/v1/sessionsDelete" method="post">
+    <p>Login: <input type="text" name="name"></p>
+    <input type="submit" value="Delete">
+</form>
+
+</body>
+</html>
