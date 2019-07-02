@@ -6,12 +6,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.*;
+
 public class UsersDAO {
     private Session session;
 
     public UsersDAO(Session session) {
         this.session = session;
     }
+
+
 
     public long getUserId(String name) throws HibernateException {
         Criteria criteria = session.createCriteria(UsersDataSets.class);
@@ -34,9 +38,26 @@ public class UsersDAO {
         session.delete(getUserById(getUserId(name)));
     }
 
-    public void updateUser(String name) throws HibernateException{
-        session.update(getUserById(getUserId(name)));
+    public void updateUser(String name, String password) throws HibernateException{
+        session.merge(new UsersDataSets(getUserId(name), name, password));
+//        session.saveOrUpdate(new UsersDataSets(getUserId(name), name, password));
     }
 
+    public List<UsersDataSets> getAllUsers() throws HibernateException {
+        Criteria criteria = session.createCriteria(UsersDataSets.class);
+        List<UsersDataSets> allUsers = null;
+        List<UsersDataSets> allUsersFinal = new ArrayList<UsersDataSets>();
+        try {
+            allUsers = criteria.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        
+        for (UsersDataSets usersDataSets : allUsers) {
+            allUsersFinal.add(new UsersDataSets(usersDataSets.getUser_names(), usersDataSets.getPassword()));
+        }
+
+        return allUsersFinal;
+    }
 }

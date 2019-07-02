@@ -3,13 +3,14 @@ package dbService;
 import dbService.dao.UsersDAO;
 import dbService.dataSets.UsersDataSets;
 import org.eclipse.jetty.server.Authentication;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class DBService {
@@ -46,13 +47,13 @@ public class DBService {
     }
 
     public long addUser(String name, String password) {
+        Session session = sessionFactory.openSession();
+
         try {
-            Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             UsersDAO dao = new UsersDAO(session);
             long id = dao.insertUser(name, password);
             transaction.commit();
-            session.close();
             return id;
         } catch (HibernateException e) {
             try {
@@ -61,28 +62,31 @@ public class DBService {
                 System.out.println(e1);
             }
             return 0;
+        } finally {
+            session.close();
         }
     }
 
     public long getUserId(String name) {
+        Session session = sessionFactory.openSession();
+
         try {
-            Session session = sessionFactory.openSession();
             UsersDAO dao = new UsersDAO(session);
             long id = dao.getUserId(name);
-            session.close();
             return id;
         } catch (Exception e) {
             System.out.println(e);
             return 0;
+        } finally {
+            session.close();
         }
     }
 
     public UsersDataSets getUser(long id) {
+        Session session = sessionFactory.openSession();
         try {
-            Session session = sessionFactory.openSession();
             UsersDAO dao = new UsersDAO(session);
             UsersDataSets usersDataSets = dao.getUserById(id);
-            session.close();
             return usersDataSets;
         } catch (HibernateException e) {
             try {
@@ -92,33 +96,53 @@ public class DBService {
                 System.out.println(e1);
             }
             return new UsersDataSets("dummy","dummy");
+        } finally {
+            session.close();
         }
     }
 
     public void deleteUser(String name) {
+        Session session = sessionFactory.openSession();
         try {
-            Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             UsersDAO dao = new UsersDAO(session);
             dao.deleteUser(name);
             transaction.commit();
-            session.close();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            session.close();
         }
     }
 
-    public void updateUser(String name) {
+    public void updateUser(String name, String password) {
+        Session session = sessionFactory.openSession();
+
         try {
-            Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             UsersDAO dao = new UsersDAO(session);
-            dao.updateUser(name);
+            dao.updateUser(name, password);
             transaction.commit();
-            session.close();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            session.close();
         }
+    }
+
+    public List<UsersDataSets> getAllUsers() {
+        Session session = sessionFactory.openSession();
+        List<UsersDataSets> allUsers = new ArrayList<UsersDataSets>();
+        try {
+            UsersDAO dao = new UsersDAO(session);
+            allUsers = dao.getAllUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return allUsers;
     }
 
 }

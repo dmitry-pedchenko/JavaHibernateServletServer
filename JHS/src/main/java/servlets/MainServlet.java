@@ -12,28 +12,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServletDeleteUser extends HttpServlet {
+public class MainServlet extends HttpServlet {
     private String contentType = "text/html;charset=utf-8";
     private final DBService dbService;
 
-    public ServletDeleteUser(DBService dbService) {
+
+    public MainServlet(DBService dbService) {
         this.dbService = dbService;
     }
 
-    public void doPost(HttpServletRequest request,
-                         HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
+
+    public void doGet(HttpServletRequest request,
+                      HttpServletResponse response) throws IOException, ServletException {
+
         Map<String, Object> pageVars = new HashMap<String, Object>();
         pageVars.put("name", "User name not selected");
         pageVars.put("password", "Password not entered");
         pageVars.put("myOwnList", Arrays.asList("Not Selected"));
-        if (name == null) {
-            response.setContentType(contentType);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        dbService.deleteUser(name);
         response.setContentType(contentType);
         try {
             response.getWriter().println(PageGenerator.getInstance().getPage("index.html", pageVars));

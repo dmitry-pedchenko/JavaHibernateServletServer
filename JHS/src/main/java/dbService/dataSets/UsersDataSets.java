@@ -71,7 +71,7 @@ public class UsersDataSets implements Serializable{
             return "DataSet: " + "\n" +
                     "id: " + this.getId() + ";\n" +
                     "User name: " + this.getUser_names() + ";\n" +
-                    "Password: " + this.getPassword() + ";";
+                    "Password: " + this.getPassword() + ";\n";
         }
 
 }
