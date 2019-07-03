@@ -1,6 +1,6 @@
 package servlets;
 
-import dbService.DBService;
+import dbService.DBServiceImplement;
 import dbService.dataSets.UsersDataSets;
 import pageGenerator.PageGenerator;
 
@@ -13,10 +13,10 @@ import java.util.*;
 
 public class ServletGetAllUsers extends HttpServlet {
     private String contentType = "text/html;charset=utf-8";
-    private final DBService dbService;
+    private final DBServiceImplement dbServiceImplement;
 
-    public ServletGetAllUsers(DBService dbService) {
-        this.dbService = dbService;
+    public ServletGetAllUsers(DBServiceImplement dbServiceImplement) {
+        this.dbServiceImplement = dbServiceImplement;
     }
 
     public void doGet(HttpServletRequest request,
@@ -24,7 +24,7 @@ public class ServletGetAllUsers extends HttpServlet {
         Map<String, Object> pageVars = new HashMap<String, Object>();
         List<UsersDataSets> allUsers = new ArrayList<UsersDataSets>();
         try {
-            allUsers = dbService.getAllUsers();
+            allUsers = dbServiceImplement.getAllUsers();
         } catch (Exception e) {
             e.printStackTrace();
         }

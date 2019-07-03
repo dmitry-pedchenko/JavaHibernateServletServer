@@ -1,6 +1,6 @@
 package servlets;
 
-import dbService.DBService;
+import dbService.DBServiceImplement;
 import pageGenerator.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -14,11 +14,11 @@ import java.util.Map;
 
 public class MainServlet extends HttpServlet {
     private String contentType = "text/html;charset=utf-8";
-    private final DBService dbService;
+    private final DBServiceImplement dbServiceImplement;
 
 
-    public MainServlet(DBService dbService) {
-        this.dbService = dbService;
+    public MainServlet(DBServiceImplement dbServiceImplement) {
+        this.dbServiceImplement = dbServiceImplement;
     }
 
 

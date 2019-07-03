@@ -1,10 +1,7 @@
 package main;
 
-import dbService.DBService;
-import org.eclipse.jetty.server.Handler;
+import dbService.DBServiceImplement;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.MainServlet;
@@ -15,13 +12,13 @@ import servlets.SessionServlets;
 
 public class Main {
     public static void main(String[] args) throws Exception{
-        DBService dbService = new DBService();
+        DBServiceImplement dbServiceImplement = new DBServiceImplement();
 
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.addServlet(new ServletHolder(new MainServlet(dbService)), "/");
-        servletContextHandler.addServlet(new ServletHolder(new SessionServlets(dbService)), "/api/v1/sessions");
-        servletContextHandler.addServlet(new ServletHolder(new ServletDeleteUser(dbService)), "/api/v1/sessionsDelete");
-        servletContextHandler.addServlet(new ServletHolder(new ServletGetAllUsers(dbService)), "/api/v1/selectAll");
+        servletContextHandler.addServlet(new ServletHolder(new MainServlet(dbServiceImplement)), "/");
+        servletContextHandler.addServlet(new ServletHolder(new SessionServlets(dbServiceImplement)), "/api/v1/sessions");
+        servletContextHandler.addServlet(new ServletHolder(new ServletDeleteUser(dbServiceImplement)), "/api/v1/sessionsDelete");
+        servletContextHandler.addServlet(new ServletHolder(new ServletGetAllUsers(dbServiceImplement)), "/api/v1/selectAll");
 
 //        ResourceHandler resourceHandler = new ResourceHandler();
 //        resourceHandler.setResourceBase("frontendHtml");

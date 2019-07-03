@@ -1,7 +1,7 @@
 package servlets;
 
 import com.google.gson.Gson;
-import dbService.DBService;
+import dbService.DBServiceImplement;
 import dbService.dataSets.UsersDataSets;
 import pageGenerator.PageGenerator;
 
@@ -16,10 +16,10 @@ import java.util.Map;
 
 public class SessionServlets extends HttpServlet {
     private String contentType = "text/html;charset=utf-8";
-    private final DBService dbService;
+    private final DBServiceImplement dbServiceImplement;
 
-    public SessionServlets(DBService dbService) {
-        this.dbService = dbService;
+    public SessionServlets(DBServiceImplement dbServiceImplement) {
+        this.dbServiceImplement = dbServiceImplement;
     }
     // ADD USER AND UPDATE USER
     public void doPost(HttpServletRequest request,
@@ -42,10 +42,10 @@ public class SessionServlets extends HttpServlet {
             return;
         }
 
-        long id = dbService.getUserId(name);
+        long id = dbServiceImplement.getUserId(name);
 
         if (id != 0) {
-            dbService.updateUser(name, password);
+            dbServiceImplement.updateUser(name, password);
             response.setContentType(contentType);
             try {
                 response.getWriter().println(PageGenerator.getInstance().getPage("index.html", pageVars));
@@ -54,7 +54,7 @@ public class SessionServlets extends HttpServlet {
             }
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            dbService.addUser(name,password);
+            dbServiceImplement.addUser(name,password);
             response.setContentType(contentType);
             try {
                 response.getWriter().println(PageGenerator.getInstance().getPage("index.html", pageVars));
@@ -79,7 +79,7 @@ public class SessionServlets extends HttpServlet {
         }
         String pass;
         try {
-            UsersDataSets usersDataSet = dbService.getUser(dbService.getUserId(name));
+            UsersDataSets usersDataSet = dbServiceImplement.getUser(dbServiceImplement.getUserId(name));
             pass = usersDataSet.getPassword();
         } catch (Exception e) {
             pass = "Not exists";
@@ -89,7 +89,7 @@ public class SessionServlets extends HttpServlet {
         pageVars.put("name", name);
         pageVars.put("password", "Password: " + pass);
         pageVars.put("myOwnList", Arrays.asList("Not Selected"));
-        UsersDataSets dataSets = dbService.getUser(dbService.getUserId(name));
+        UsersDataSets dataSets = dbServiceImplement.getUser(dbServiceImplement.getUserId(name));
         response.setContentType(contentType);
         try {
             response.getWriter().println(PageGenerator.getInstance().getPage("index.html", pageVars));

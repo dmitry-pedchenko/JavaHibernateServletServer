@@ -1,6 +1,6 @@
 package servlets;
 
-import dbService.DBService;
+import dbService.DBServiceImplement;
 import pageGenerator.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -14,10 +14,10 @@ import java.util.Map;
 
 public class ServletDeleteUser extends HttpServlet {
     private String contentType = "text/html;charset=utf-8";
-    private final DBService dbService;
+    private final DBServiceImplement dbServiceImplement;
 
-    public ServletDeleteUser(DBService dbService) {
-        this.dbService = dbService;
+    public ServletDeleteUser(DBServiceImplement dbServiceImplement) {
+        this.dbServiceImplement = dbServiceImplement;
     }
 
     public void doPost(HttpServletRequest request,
@@ -33,7 +33,7 @@ public class ServletDeleteUser extends HttpServlet {
             return;
         }
 
-        dbService.deleteUser(name);
+        dbServiceImplement.deleteUser(name);
         response.setContentType(contentType);
         try {
             response.getWriter().println(PageGenerator.getInstance().getPage("index.html", pageVars));

@@ -13,12 +13,12 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class DBService {
+public class DBServiceImplement implements DbService  {
     private static final String hibernate_show_sql = "true";
     private static final String hibernate_hbm2ddl_auto = "create";
     private final SessionFactory sessionFactory;
 
-    public DBService() {
+    public DBServiceImplement() {
         Configuration configuration = getMySqlConfiguration();
         this.sessionFactory = createSessionFactory(configuration);
     }
